@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.repository;
+package com.ambition;
 
 import com.ambition.ambitionbackend.model.Result;
 import org.springframework.data.mongodb.repository.MongoRepository;
