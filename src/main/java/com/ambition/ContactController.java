@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.controller;
+package com.ambition;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
