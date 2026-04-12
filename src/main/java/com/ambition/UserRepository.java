@@ -1,6 +1,6 @@
-package com.ambition.ambitionbackend.repository;
+package com.ambition.ambitionbackend.repositor;
 
-import com.ambition.ambitionbackend.model.User;
+import com.ambition;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
