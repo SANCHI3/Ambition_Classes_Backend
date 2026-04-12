@@ -1,5 +1,5 @@
 
-package com.ambition.ambitionbackend.controller;
+package com.ambition;
 
 import com.ambition.ambitionbackend.model.Student;
 import com.ambition.ambitionbackend.model.StudentRequest;
