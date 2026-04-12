@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.controller;
+package com.ambition;
 
 import com.ambition.ambitionbackend.model.ResultImage;
 import com.ambition.ambitionbackend.repository.ResultImageRepository;
