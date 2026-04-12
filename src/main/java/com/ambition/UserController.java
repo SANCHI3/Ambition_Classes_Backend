@@ -1,8 +1,4 @@
-package com.ambition.ambitionbackend.controller;
-
-import com.ambition.ambitionbackend.model.*;
-import com.ambition.ambitionbackend.repository.*;
-
+package com.ambition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
