@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.model.ResultImage;
+package com.ambition.ambitionbackend.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
