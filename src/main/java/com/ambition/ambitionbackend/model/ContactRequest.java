@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.model.ContactRequest;
+package com.ambition.ambitionbackend.model;
 
 public class ContactRequest {
 
