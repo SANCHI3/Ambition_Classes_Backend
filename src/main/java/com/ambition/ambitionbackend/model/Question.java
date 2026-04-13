@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.model.Question;
+package com.ambition.ambitionbackend.model;
 
 import java.util.List;
 
