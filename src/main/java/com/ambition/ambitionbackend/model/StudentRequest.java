@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.model.StudentRequest
+package com.ambition.ambitionbackend.model.StudentRequest;
 
 public class StudentRequest {
 
