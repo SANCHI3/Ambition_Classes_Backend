@@ -1,4 +1,4 @@
-package com.ambition.ambitionbackend.service;
+package com.ambition;
 
 import com.ambition.ambitionbackend.model.Student;
 import com.ambition.ambitionbackend.repository.StudentRepository;
