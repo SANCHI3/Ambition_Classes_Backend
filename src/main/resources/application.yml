@@ -4,7 +4,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://AmbitionAdmin:Ambition03@cluster0.apd1rnr.mongodb.net/?appName=Cluster0
+      uri: mongodb+srv://AmbitionAdmin:Ambition03@cluster0.apd1rnr.mongodb.net/ambitiondb
 
   servlet:
     multipart:
