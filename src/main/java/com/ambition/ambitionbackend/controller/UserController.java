@@ -83,17 +83,23 @@ public class UserController {
         return ResponseEntity.ok("Student + Parent created");
     }
 
-    @PostMapping("/login")
+   @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody User loginUser) {
+
+    System.out.println("INPUT: " + loginUser.getUsername() + " " + loginUser.getPassword());
 
     User user = userRepository.findByUsername(loginUser.getUsername());
 
     if (user == null) {
+        System.out.println("User not found");
         return ResponseEntity.status(401).body("User not found");
     }
 
-    // 🔥 TEMP SIMPLE CHECK (NO ENCRYPTION)
-    if (!user.getPassword().equals(loginUser.getPassword())) {
+    System.out.println("DB: " + user.getUsername() + " " + user.getPassword());
+
+    // 🔥 SIMPLE PASSWORD CHECK
+    if (!user.getPassword().trim().equals(loginUser.getPassword().trim())) {
+        System.out.println("Password mismatch");
         return ResponseEntity.status(401).body("Wrong password");
     }
 
