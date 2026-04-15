@@ -84,16 +84,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user){
+public ResponseEntity<?> login(@RequestBody User loginUser) {
 
-        User existing = userRepository.findByUsername(user.getUsername());
+    User user = userRepository.findByUsername(loginUser.getUsername());
 
-        if(existing == null || !existing.getPassword().equals(user.getPassword())){
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
-
-        return ResponseEntity.ok(existing); // ✅ includes firstLogin
+    if (user == null) {
+        return ResponseEntity.status(401).body("User not found");
     }
+
+    // 🔥 TEMP SIMPLE CHECK (NO ENCRYPTION)
+    if (!user.getPassword().equals(loginUser.getPassword())) {
+        return ResponseEntity.status(401).body("Wrong password");
+    }
+
+    return ResponseEntity.ok(user);
+}
 
     @PutMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestBody Map<String, String> data){
