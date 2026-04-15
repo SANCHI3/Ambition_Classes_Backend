@@ -20,7 +20,8 @@ public class User {
     private boolean firstLogin = true;
 
     public User() {}
-
+    List<User> allUsers = userRepository.findAll();
+System.out.println("ALL USERS: " + allUsers);
     // GETTERS
     public String getId() { return id; }
     public String getUsername() { return username; }
