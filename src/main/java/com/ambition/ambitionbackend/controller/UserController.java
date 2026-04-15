@@ -85,6 +85,8 @@ public class UserController {
 
    @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody User loginUser) {
+    List<User> users = userRepository.findAll();
+System.out.println("ALL USERS: " + users);
 
     System.out.println("INPUT: " + loginUser.getUsername() + " " + loginUser.getPassword());
 
