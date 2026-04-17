@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ambition.ambitionbackend.repository.UserRepository;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://ambitionclassesozar.in")
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
