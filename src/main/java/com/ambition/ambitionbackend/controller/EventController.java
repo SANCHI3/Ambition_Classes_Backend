@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "https://ambitionclassesozar.in")
 public class EventController {
 
     @Autowired
