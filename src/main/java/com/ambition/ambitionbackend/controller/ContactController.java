@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.ambition.ambitionbackend.model.ContactRequest;
 @RestController
 @RequestMapping("/api/contact")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://ambitionclassesozar.in")
 public class ContactController {
 
     @Autowired
