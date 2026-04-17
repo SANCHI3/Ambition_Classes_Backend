@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/result-images")
-@CrossOrigin
+@CrossOrigin(origins = "https://ambitionclassesozar.in")
 public class ResultImageController {
 
     @Autowired
