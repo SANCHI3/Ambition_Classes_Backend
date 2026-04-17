@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "https://ambitionclassesozar.in")
 @RequestMapping("/api/tests")
 public class TestController {
 
