@@ -14,10 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/result-images")
-@CrossOrigin(origins = {
-    "https://ambitionclassesozar.in",
-    "https://www.ambitionclassesozar.in"
-})
+@CrossOrigin(origins = "*")
 public class ResultImageController {
 
     @Autowired
@@ -30,11 +27,13 @@ private Cloudinary cloudinary;
 public Map upload(@RequestParam("file") MultipartFile file) {
 
     try {
-        System.out.println("Uploading file: " + file.getOriginalFilename());
+        if (file.isEmpty()) {
+            throw new RuntimeException("File is empty");
+        }
 
         Map uploadResult = cloudinary.uploader().upload(
-                file.getInputStream(),   // ✅ IMPORTANT FIX
-                ObjectUtils.emptyMap()
+                file.getBytes(),   // ✅ CHANGE THIS BACK
+                ObjectUtils.asMap("resource_type", "auto")  // ✅ IMPORTANT
         );
 
         String imageUrl = uploadResult.get("secure_url").toString();
@@ -46,11 +45,10 @@ public Map upload(@RequestParam("file") MultipartFile file) {
         return Map.of("url", imageUrl);
 
     } catch (Exception e) {
-        e.printStackTrace();   // 🔥 MUST
-        throw new RuntimeException("Upload failed: " + e.getMessage());
+        e.printStackTrace();
+        throw new RuntimeException("Upload failed");
     }
 }
-
     
 @GetMapping
 public List<ResultImage> getAllImages(){
