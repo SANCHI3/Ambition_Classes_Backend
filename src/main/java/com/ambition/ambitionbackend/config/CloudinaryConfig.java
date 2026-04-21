@@ -1,3 +1,4 @@
+package com.ambition.ambitionbackend.config;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.context.annotation.Bean;
