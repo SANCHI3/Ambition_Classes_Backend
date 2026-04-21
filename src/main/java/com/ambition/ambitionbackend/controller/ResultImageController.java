@@ -21,26 +21,25 @@ public class ResultImageController {
     private ResultImageRepository imageRepository; // ✅ FIXED
 
     @Autowired
-    private Cloudinary cloudinary;
+private Cloudinary cloudinary;
 
-    // ✅ UPLOAD IMAGE
-    @PostMapping("/upload")
-    public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
+@PostMapping("/upload")
+public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
 
-        Map uploadResult = cloudinary.uploader().upload(
-                file.getBytes(),
-                ObjectUtils.emptyMap()
-        );
+    Map uploadResult = cloudinary.uploader().upload(
+            file.getBytes(),
+            ObjectUtils.emptyMap()
+    );
 
-        String imageUrl = uploadResult.get("secure_url").toString();
+    String imageUrl = uploadResult.get("secure_url").toString();
 
-        ResultImage img = new ResultImage();
-        img.setImage(imageUrl); // ✅ FIXED
+    ResultImage r = new ResultImage();
+    r.setImage(imageUrl);
 
-        imageRepository.save(img); // ✅ FIXED
+    repo.save(r);
 
-        return Map.of("url", imageUrl);
-    }
+    return Map.of("url", imageUrl);
+}
 
     // ✅ GET ALL IMAGES
     @GetMapping
