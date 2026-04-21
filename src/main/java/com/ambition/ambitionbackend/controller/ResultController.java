@@ -4,7 +4,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.ambition.ambitionbackend.model.Result;
 import com.ambition.ambitionbackend.model.Student;
 import com.ambition.ambitionbackend.repository.ResultRepository;
-
+import com.ambition.ambitionbackend.model.ResultImage;
 import com.ambition.ambitionbackend.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
