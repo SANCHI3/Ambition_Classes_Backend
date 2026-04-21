@@ -18,7 +18,7 @@ import java.util.Map;
 public class ResultImageController {
 
     @Autowired
-    private ResultImageRepository imageRepository; // ✅ FIXED
+    private ResultImageRepository repo; // ✅ FIXED
 
     @Autowired
 private Cloudinary cloudinary;
