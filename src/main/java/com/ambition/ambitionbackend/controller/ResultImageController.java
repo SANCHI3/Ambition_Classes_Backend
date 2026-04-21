@@ -18,12 +18,12 @@ import java.util.Map;
 public class ResultImageController {
 
     @Autowired
-    private ResultImageRepository repo;
+    private ResultImageRepository imageRepository; // ✅ FIXED
 
     @Autowired
     private Cloudinary cloudinary;
 
-    // ✅ UPLOAD IMAGE (CLOUDINARY)
+    // ✅ UPLOAD IMAGE
     @PostMapping("/upload")
     public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
 
@@ -34,23 +34,23 @@ public class ResultImageController {
 
         String imageUrl = uploadResult.get("secure_url").toString();
 
-        ResultImage r = new ResultImage();
-        r.setImage(imageUrl); // ✅ store URL, not file path
+        ResultImage img = new ResultImage();
+        img.setImage(imageUrl); // ✅ FIXED
 
-        repo.save(r);
+        imageRepository.save(img); // ✅ FIXED
 
         return Map.of("url", imageUrl);
     }
 
     // ✅ GET ALL IMAGES
     @GetMapping
-    public List<ResultImage> getAll(){
-        return repo.findAll();
+    public List<ResultImage> getAllImages(){
+        return imageRepository.findAll(); // ✅ FIXED
     }
 
-    // ✅ DELETE IMAGE
+    // ✅ DELETE
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
-        repo.deleteById(id);
+        imageRepository.deleteById(id);
     }
 }
