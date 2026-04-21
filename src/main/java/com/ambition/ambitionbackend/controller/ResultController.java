@@ -1,16 +1,14 @@
 package com.ambition.ambitionbackend.controller;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
+
 import com.ambition.ambitionbackend.model.Result;
 import com.ambition.ambitionbackend.model.Student;
 import com.ambition.ambitionbackend.repository.ResultRepository;
-import com.ambition.ambitionbackend.model.ResultImage;
 import com.ambition.ambitionbackend.repository.StudentRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import java.util.Map;
+
 import java.util.List;
 
 @RestController
@@ -38,6 +36,7 @@ public class ResultController {
     public void delete(@PathVariable String id) {
         resultRepository.deleteById(id);
     }
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Result result){
 
@@ -53,16 +52,16 @@ public class ResultController {
 
         result.setName(s.getName());
         result.setClassName(s.getClassName());
-        result.setStudentMobile(s.getStudentMobile()); // 🔥 MOST IMPORTANT
+        result.setStudentMobile(s.getStudentMobile());
 
         return ResponseEntity.ok(resultRepository.save(result));
     }
+
     @GetMapping("/{id}")
     public Result getById(@PathVariable String id){
         return resultRepository.findById(id).orElse(null);
     }
 
-    // UPDATE result
     @PutMapping("/{id}")
     public Result update(@PathVariable String id, @RequestBody Result updated){
 
@@ -75,33 +74,4 @@ public class ResultController {
 
         return resultRepository.save(existing);
     }
-
-     @Autowired
-    private Cloudinary cloudinary;
-
-    @Autowired
-    private ResultRepository repository;
-
-    @PostMapping("/upload")
-    public Map uploadImage(@RequestParam("file") MultipartFile file) throws Exception {
-
-        Map uploadResult = cloudinary.uploader().upload(
-                file.getBytes(),
-                ObjectUtils.emptyMap()
-        );
-
-        String imageUrl = uploadResult.get("secure_url").toString();
-
-        ResultImage img = new ResultImage();
-        img.setImageUrl(imageUrl);
-        repository.save(img);
-
-        return Map.of("url", imageUrl);
-    }
-
-    @GetMapping
-    public java.util.List<ResultImage> getAllImages(){
-        return repository.findAll();
-    }
-
 }
