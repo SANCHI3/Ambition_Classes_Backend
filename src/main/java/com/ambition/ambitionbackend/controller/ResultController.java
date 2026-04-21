@@ -1,5 +1,6 @@
 package com.ambition.ambitionbackend.controller;
-
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.ambition.ambitionbackend.model.Result;
 import com.ambition.ambitionbackend.model.Student;
 import com.ambition.ambitionbackend.repository.ResultRepository;
@@ -8,7 +9,8 @@ import com.ambition.ambitionbackend.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
 import java.util.List;
 
 @RestController
@@ -72,6 +74,34 @@ public class ResultController {
         existing.setMarks(updated.getMarks());
 
         return resultRepository.save(existing);
+    }
+
+     @Autowired
+    private Cloudinary cloudinary;
+
+    @Autowired
+    private ResultRepository repository;
+
+    @PostMapping("/upload")
+    public Map uploadImage(@RequestParam("file") MultipartFile file) throws Exception {
+
+        Map uploadResult = cloudinary.uploader().upload(
+                file.getBytes(),
+                ObjectUtils.emptyMap()
+        );
+
+        String imageUrl = uploadResult.get("secure_url").toString();
+
+        ResultImage img = new ResultImage();
+        img.setImageUrl(imageUrl);
+        repository.save(img);
+
+        return Map.of("url", imageUrl);
+    }
+
+    @GetMapping
+    public java.util.List<ResultImage> getAllImages(){
+        return repository.findAll();
     }
 
 }
