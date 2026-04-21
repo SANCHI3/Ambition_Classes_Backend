@@ -2,13 +2,15 @@ package com.ambition.ambitionbackend.controller;
 
 import com.ambition.ambitionbackend.model.ResultImage;
 import com.ambition.ambitionbackend.repository.ResultImageRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/result-images")
@@ -18,26 +20,31 @@ public class ResultImageController {
     @Autowired
     private ResultImageRepository repo;
 
-    // ✅ UPLOAD IMAGE (NO resultId)
+    @Autowired
+    private Cloudinary cloudinary;
+
+    // ✅ UPLOAD IMAGE (CLOUDINARY)
     @PostMapping("/upload")
-    public ResultImage upload(@RequestParam("file") MultipartFile file) throws IOException {
+    public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
 
-        Files.createDirectories(Paths.get("uploads"));
+        Map uploadResult = cloudinary.uploader().upload(
+                file.getBytes(),
+                ObjectUtils.emptyMap()
+        );
 
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        Path path = Paths.get("uploads/" + fileName);
-
-        Files.write(path, file.getBytes());
+        String imageUrl = uploadResult.get("secure_url").toString();
 
         ResultImage r = new ResultImage();
-        r.setImage("uploads/" + fileName); // ✅ MUST HAVE /
+        r.setImage(imageUrl); // ✅ store URL, not file path
 
-        return repo.save(r);
+        repo.save(r);
+
+        return Map.of("url", imageUrl);
     }
 
     // ✅ GET ALL IMAGES
     @GetMapping
-    public List<ResultImage> getAll() {
+    public List<ResultImage> getAll(){
         return repo.findAll();
     }
 
