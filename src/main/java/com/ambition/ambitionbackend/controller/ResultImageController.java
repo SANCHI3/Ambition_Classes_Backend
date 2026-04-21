@@ -27,27 +27,29 @@ public class ResultImageController {
 private Cloudinary cloudinary;
 
 @PostMapping("/upload")
-public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
+public Map upload(@RequestParam("file") MultipartFile file) {
 
-    System.out.println("🔥 Upload started");
+    try {
+        System.out.println("FILE NAME: " + file.getOriginalFilename());
 
-    Map uploadResult = cloudinary.uploader().upload(
-            file.getBytes(),
-            ObjectUtils.emptyMap()
-    );
+        Map uploadResult = cloudinary.uploader().upload(
+                file.getBytes(),
+                ObjectUtils.emptyMap()
+        );
 
-    System.out.println("🔥 Cloudinary upload done");
+        String imageUrl = uploadResult.get("secure_url").toString();
 
-    String imageUrl = uploadResult.get("secure_url").toString();
+        ResultImage r = new ResultImage();
+        r.setImage(imageUrl);
 
-    ResultImage r = new ResultImage();
-    r.setImage(imageUrl);
+        repo.save(r);
 
-    repo.save(r);
+        return Map.of("url", imageUrl);
 
-    System.out.println("🔥 Saved to DB");
-
-    return Map.of("url", imageUrl);
+    } catch (Exception e) {
+        e.printStackTrace(); // 🔥 THIS WILL SHOW REAL ERROR
+        throw new RuntimeException(e);
+    }
 }
 
     
