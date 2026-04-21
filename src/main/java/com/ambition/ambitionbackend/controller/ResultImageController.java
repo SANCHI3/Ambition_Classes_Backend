@@ -14,7 +14,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/result-images")
-@CrossOrigin(origins = "https://ambitionclassesozar.in")
+@CrossOrigin(origins = {
+    "https://ambitionclassesozar.in",
+    "https://www.ambitionclassesozar.in"
+})
 public class ResultImageController {
 
     @Autowired
