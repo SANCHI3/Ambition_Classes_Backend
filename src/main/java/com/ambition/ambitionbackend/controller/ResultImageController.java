@@ -33,9 +33,9 @@ public Map upload(@RequestParam("file") MultipartFile file) {
         System.out.println("FILE NAME: " + file.getOriginalFilename());
 
         Map uploadResult = cloudinary.uploader().upload(
-                file.getBytes(),
-                ObjectUtils.emptyMap()
-        );
+    file.getInputStream(),
+    ObjectUtils.emptyMap()
+);
 
         String imageUrl = uploadResult.get("secure_url").toString();
 
