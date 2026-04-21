@@ -30,25 +30,24 @@ private Cloudinary cloudinary;
 public Map upload(@RequestParam("file") MultipartFile file) {
 
     try {
-        System.out.println("FILE NAME: " + file.getOriginalFilename());
+        System.out.println("Uploading file: " + file.getOriginalFilename());
 
         Map uploadResult = cloudinary.uploader().upload(
-    file.getInputStream(),
-    ObjectUtils.emptyMap()
-);
+                file.getInputStream(),   // ✅ IMPORTANT FIX
+                ObjectUtils.emptyMap()
+        );
 
         String imageUrl = uploadResult.get("secure_url").toString();
 
         ResultImage r = new ResultImage();
         r.setImage(imageUrl);
-
         repo.save(r);
 
         return Map.of("url", imageUrl);
 
     } catch (Exception e) {
-        e.printStackTrace(); // 🔥 THIS WILL SHOW REAL ERROR
-        throw new RuntimeException(e);
+        e.printStackTrace();   // 🔥 MUST
+        throw new RuntimeException("Upload failed: " + e.getMessage());
     }
 }
 
