@@ -42,14 +42,17 @@ public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
 }
 
     // ✅ GET ALL IMAGES
-    @GetMapping
-    public List<ResultImage> getAllImages(){
-        return imageRepository.findAll(); // ✅ FIXED
-    }
+  
 
-    // ✅ DELETE
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        imageRepository.deleteById(id);
-    }
+    // ✅ GET ALL IMAGES
+@GetMapping
+public List<ResultImage> getAllImages(){
+    return repo.findAll(); // ✅ FIX
+}
+
+// ✅ DELETE
+@DeleteMapping("/{id}")
+public void delete(@PathVariable String id) {
+    repo.deleteById(id); // ✅ FIX
+}
 }
