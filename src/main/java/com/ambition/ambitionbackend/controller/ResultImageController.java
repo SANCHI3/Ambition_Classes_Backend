@@ -18,7 +18,7 @@ import java.util.Map;
 public class ResultImageController {
 
     @Autowired
-    private ResultImageRepository repo; // ✅ FIXED
+    private ResultImageRepository repo; 
 
     @Autowired
 private Cloudinary cloudinary;
@@ -26,10 +26,14 @@ private Cloudinary cloudinary;
 @PostMapping("/upload")
 public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
 
+    System.out.println("🔥 Upload started");
+
     Map uploadResult = cloudinary.uploader().upload(
             file.getBytes(),
             ObjectUtils.emptyMap()
     );
+
+    System.out.println("🔥 Cloudinary upload done");
 
     String imageUrl = uploadResult.get("secure_url").toString();
 
@@ -38,21 +42,20 @@ public Map upload(@RequestParam("file") MultipartFile file) throws Exception {
 
     repo.save(r);
 
+    System.out.println("🔥 Saved to DB");
+
     return Map.of("url", imageUrl);
 }
 
-    // ✅ GET ALL IMAGES
-  
-
-    // ✅ GET ALL IMAGES
+    
 @GetMapping
 public List<ResultImage> getAllImages(){
-    return repo.findAll(); // ✅ FIX
+    return repo.findAll(); 
 }
 
-// ✅ DELETE
+
 @DeleteMapping("/{id}")
 public void delete(@PathVariable String id) {
-    repo.deleteById(id); // ✅ FIX
+    repo.deleteById(id); 
 }
 }
