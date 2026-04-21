@@ -60,4 +60,8 @@ public List<ResultImage> getAllImages(){
 public void delete(@PathVariable String id) {
     repo.deleteById(id); 
 }
+    @PostMapping
+public ResultImage saveImage(@RequestBody ResultImage r){
+    return repo.save(r);
+}
 }
