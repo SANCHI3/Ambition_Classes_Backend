@@ -113,4 +113,23 @@ public class EventController {
 
         return "Event deleted";
     }
+    @PostMapping("/api/events/add-photo")
+public String addPhoto(@RequestBody Map<String, String> data){
+
+    String photo = data.get("photo");
+    String eventId = data.get("eventId");
+
+    Event event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new RuntimeException("Event not found"));
+
+    if(event.getPhotos() == null){
+        event.setPhotos(new ArrayList<>());
+    }
+
+    event.getPhotos().add(photo);
+
+    eventRepository.save(event);
+
+    return "Photo added";
+}
 }
