@@ -40,7 +40,7 @@ public class EventController {
 
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
-            String uploadDir = "C:/Users/SANCHI/IdeaProjects/ambition-backend/uploads/";
+            String uploadDir = System.getProperty("user.dir") + "/uploads/";
 
             File folder = new File(uploadDir);
             if (!folder.exists()) {
