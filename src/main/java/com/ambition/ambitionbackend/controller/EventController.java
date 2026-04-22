@@ -5,11 +5,10 @@ import com.ambition.ambitionbackend.repository.EventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 import java.util.ArrayList;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "https://ambitionclassesozar.in")
@@ -24,49 +23,29 @@ public class EventController {
         return eventRepository.save(event);
     }
 
-    // ✅ 2. Upload Photo
-    @PostMapping("/api/upload")
-    public String upload(@RequestParam("file") MultipartFile file,
-                         @RequestParam("eventId") String eventId) {
+    // ✅ 2. Add Photo (Cloudinary URL)
+    @PostMapping("/api/events/add-photo")
+    public String addPhoto(@RequestBody Map<String, String> data){
 
-        try {
-            if (file.isEmpty()) {
-                throw new RuntimeException("File is empty");
-            }
+        String photo = data.get("photo");
+        String eventId = data.get("eventId");
 
-            if (eventId == null || eventId.isEmpty()) {
-                throw new RuntimeException("Event ID missing");
-            }
-
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-
-            String uploadDir = System.getProperty("user.dir") + "/uploads/";
-
-            File folder = new File(uploadDir);
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-
-            File dest = new File(uploadDir + fileName);
-            file.transferTo(dest);
-
-            Event event = eventRepository.findById(eventId)
-                    .orElseThrow(() -> new RuntimeException("Event not found"));
-
-            if (event.getPhotos() == null) {
-                event.setPhotos(new ArrayList<>());
-            }
-
-            event.getPhotos().add("uploads/" + fileName);
-
-            eventRepository.save(event);
-
-            return "uploads/" + fileName;
-
-        } catch (Exception e) {
-            e.printStackTrace();   // 🔥 THIS IS IMPORTANT
-            return "ERROR: " + e.getMessage();
+        if(photo == null || eventId == null){
+            return "Missing data";
         }
+
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        if(event.getPhotos() == null){
+            event.setPhotos(new ArrayList<>());
+        }
+
+        event.getPhotos().add(photo);
+
+        eventRepository.save(event);
+
+        return "Photo added successfully";
     }
 
     // ✅ 3. Get Events
@@ -74,62 +53,33 @@ public class EventController {
     public List<Event> getEvents(){
         return eventRepository.findAll();
     }
+
+    // ✅ 4. Delete Photo (only from DB)
     @DeleteMapping("/api/photo")
     public String deletePhoto(@RequestParam String eventId,
                               @RequestParam String photoPath){
 
-        Event event = eventRepository.findById(eventId).orElseThrow();
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
 
         if(event.getPhotos() != null){
             event.getPhotos().remove(photoPath);
-        }
-
-        // delete file from folder
-        File file = new File("C:/Users/SANCHI/IdeaProjects/ambition-backend/" + photoPath);
-        if(file.exists()){
-            file.delete();
         }
 
         eventRepository.save(event);
 
         return "Photo deleted";
     }
+
+    // ✅ 5. Delete Event
     @DeleteMapping("/api/event/{id}")
     public String deleteEvent(@PathVariable String id){
 
-        Event event = eventRepository.findById(id).orElseThrow();
-
-        // delete all photos from folder
-        if(event.getPhotos() != null){
-            for(String path : event.getPhotos()){
-                File file = new File(System.getProperty("user.dir") + "/" + path);
-                if(file.exists()){
-                    file.delete();
-                }
-            }
-        }
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
 
         eventRepository.deleteById(id);
 
         return "Event deleted";
     }
-    @PostMapping("/api/events/add-photo")
-public String addPhoto(@RequestBody Map<String, String> data){
-
-    String photo = data.get("photo");
-    String eventId = data.get("eventId");
-
-    Event event = eventRepository.findById(eventId)
-            .orElseThrow(() -> new RuntimeException("Event not found"));
-
-    if(event.getPhotos() == null){
-        event.setPhotos(new ArrayList<>());
-    }
-
-    event.getPhotos().add(photo);
-
-    eventRepository.save(event);
-
-    return "Photo added";
-}
 }
