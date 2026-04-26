@@ -4,7 +4,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://AmbitionAdmin:Ambition03@cluster0.apd1rnr.mongodb.net/ambitiondb
+      uri: ${MONGO_URI}
 
   servlet:
     multipart:
@@ -14,8 +14,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: sanchigangurde3@gmail.com
-    password: wpln cbhp gzfd fqqo
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
