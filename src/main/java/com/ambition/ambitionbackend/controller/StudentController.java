@@ -43,14 +43,19 @@ public class StudentController {
     @DeleteMapping("/mobile/{mobile}")
 public ResponseEntity<?> deleteStudent(@PathVariable String mobile) {
     try {
+
         System.out.println("DELETE HIT: " + mobile);
 
         Student student = studentRepository.findByStudentMobile(mobile);
+
         if (student == null) {
             return ResponseEntity.status(404).body("Student not found");
         }
 
-        studentRepository.deleteById(student.getId());
+        String id = student.getId();
+
+        // 🔥 SAFE DELETE
+        studentRepository.deleteById(id);
 
         return ResponseEntity.ok("Deleted OK");
 
