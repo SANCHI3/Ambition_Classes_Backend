@@ -114,7 +114,7 @@ public class StudentController {
 
         return studentRepository.save(existing);
     }
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public Student getById(@PathVariable String id){
         return studentRepository.findById(id).orElse(null);
     }
