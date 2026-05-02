@@ -45,56 +45,21 @@ public ResponseEntity<?> deleteStudent(@PathVariable String mobile){
 
     try {
 
-        System.out.println("DELETE CALLED FOR: " + mobile);
+        System.out.println("DELETE CALLED: " + mobile);
 
-        // 1️⃣ DELETE STUDENT
         Student student = studentRepository.findByStudentMobile(mobile);
-        if(student != null){
-            studentRepository.delete(student);
+
+        if(student == null){
+            return ResponseEntity.status(404).body("Student not found");
         }
 
-        // 2️⃣ DELETE USER
-        User studentUser = userRepository.findByUsername(mobile);
-        if(studentUser != null){
-            userRepository.delete(studentUser);
-        }
-
-        // 3️⃣ REMOVE FROM PARENTS (SAFE)
-        List<User> parents = userRepository.findByRole("parent");
-
-        if(parents != null){
-            for(User parent : parents){
-
-                List<String> children = parent.getChildren();
-
-                // 🔥 SAFETY CHECK
-                if(children == null || children.isEmpty()){
-                    continue;
-                }
-
-                if(children.contains(mobile)){
-
-                    children.remove(mobile);
-
-                    if(children.isEmpty()){
-                        userRepository.delete(parent);
-                    } else {
-                        parent.setChildren(children);
-                        userRepository.save(parent);
-                    }
-                }
-            }
-        }
+        studentRepository.delete(student);
 
         return ResponseEntity.ok("Deleted successfully");
 
     } catch(Exception e){
-
-        e.printStackTrace(); // 🔥 VERY IMPORTANT
-
-        return ResponseEntity
-                .status(500)
-                .body("Error: " + e.getMessage());
+        e.printStackTrace();
+        return ResponseEntity.status(500).body(e.getMessage());
     }
 }
     // 🔥 ADD THIS HERE (UPDATE)
