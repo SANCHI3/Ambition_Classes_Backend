@@ -45,38 +45,43 @@ public ResponseEntity<?> deleteStudent(@PathVariable String mobile){
 
     try {
 
-        // 🔥 1. DELETE STUDENT
+        System.out.println("DELETE CALLED FOR: " + mobile);
+
+        // 1️⃣ DELETE STUDENT
         Student student = studentRepository.findByStudentMobile(mobile);
         if(student != null){
             studentRepository.delete(student);
         }
 
-        // 🔥 2. DELETE STUDENT USER
+        // 2️⃣ DELETE USER
         User studentUser = userRepository.findByUsername(mobile);
         if(studentUser != null){
             userRepository.delete(studentUser);
         }
 
-        // 🔥 3. REMOVE FROM PARENT SAFELY
+        // 3️⃣ REMOVE FROM PARENTS (SAFE)
         List<User> parents = userRepository.findByRole("parent");
 
-        for(User parent : parents){
+        if(parents != null){
+            for(User parent : parents){
 
-            List<String> children = parent.getChildren();
+                List<String> children = parent.getChildren();
 
-            if(children == null){
-                continue; // skip safely
-            }
+                // 🔥 SAFETY CHECK
+                if(children == null || children.isEmpty()){
+                    continue;
+                }
 
-            if(children.contains(mobile)){
+                if(children.contains(mobile)){
 
-                children.remove(mobile);
+                    children.remove(mobile);
 
-                if(children.isEmpty()){
-                    userRepository.delete(parent);
-                } else {
-                    parent.setChildren(children);
-                    userRepository.save(parent);
+                    if(children.isEmpty()){
+                        userRepository.delete(parent);
+                    } else {
+                        parent.setChildren(children);
+                        userRepository.save(parent);
+                    }
                 }
             }
         }
@@ -84,8 +89,12 @@ public ResponseEntity<?> deleteStudent(@PathVariable String mobile){
         return ResponseEntity.ok("Deleted successfully");
 
     } catch(Exception e){
+
         e.printStackTrace(); // 🔥 VERY IMPORTANT
-        return ResponseEntity.status(500).body("Delete failed: " + e.getMessage());
+
+        return ResponseEntity
+                .status(500)
+                .body("Error: " + e.getMessage());
     }
 }
     // 🔥 ADD THIS HERE (UPDATE)
