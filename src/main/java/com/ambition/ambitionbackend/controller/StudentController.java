@@ -41,25 +41,22 @@ public class StudentController {
 
     // ✅ DELETE
     @DeleteMapping("/mobile/{mobile}")
-public ResponseEntity<?> deleteStudent(@PathVariable String mobile){
-
+public ResponseEntity<?> deleteStudent(@PathVariable String mobile) {
     try {
-
-        System.out.println("DELETE CALLED: " + mobile);
+        System.out.println("DELETE HIT: " + mobile);
 
         Student student = studentRepository.findByStudentMobile(mobile);
-
-        if(student == null){
+        if (student == null) {
             return ResponseEntity.status(404).body("Student not found");
         }
 
         studentRepository.delete(student);
 
-        return ResponseEntity.ok("Deleted successfully");
+        return ResponseEntity.ok("Deleted OK");
 
-    } catch(Exception e){
+    } catch (Exception e) {
         e.printStackTrace();
-        return ResponseEntity.status(500).body(e.getMessage());
+        return ResponseEntity.status(500).body(e.toString());
     }
 }
     // 🔥 ADD THIS HERE (UPDATE)
