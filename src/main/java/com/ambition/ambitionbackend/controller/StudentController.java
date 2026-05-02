@@ -40,7 +40,7 @@ public class StudentController {
     }
 
     // ✅ DELETE
-    @DeleteMapping("/{mobile}")
+    @DeleteMapping("/mobile/{mobile}")
     public ResponseEntity<?> deleteStudent(@PathVariable String mobile){
 
         // 🔥 1. DELETE STUDENT
