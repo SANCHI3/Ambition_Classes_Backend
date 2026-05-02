@@ -41,11 +41,12 @@ public class StudentController {
 
     // ✅ DELETE
     @DeleteMapping("/mobile/{mobile}")
-    public ResponseEntity<?> deleteStudent(@PathVariable String mobile){
+public ResponseEntity<?> deleteStudent(@PathVariable String mobile){
+
+    try {
 
         // 🔥 1. DELETE STUDENT
         Student student = studentRepository.findByStudentMobile(mobile);
-
         if(student != null){
             studentRepository.delete(student);
         }
@@ -56,25 +57,37 @@ public class StudentController {
             userRepository.delete(studentUser);
         }
 
-        // 🔥 3. REMOVE FROM PARENT
+        // 🔥 3. REMOVE FROM PARENT SAFELY
         List<User> parents = userRepository.findByRole("parent");
 
         for(User parent : parents){
-            if(parent.getChildren() != null && parent.getChildren().contains(mobile)){
 
-                parent.getChildren().remove(mobile);
+            List<String> children = parent.getChildren();
 
-                // 🔥 DELETE PARENT IF NO CHILDREN LEFT
-                if(parent.getChildren().isEmpty()){
+            if(children == null){
+                continue; // skip safely
+            }
+
+            if(children.contains(mobile)){
+
+                children.remove(mobile);
+
+                if(children.isEmpty()){
                     userRepository.delete(parent);
                 } else {
+                    parent.setChildren(children);
                     userRepository.save(parent);
                 }
             }
         }
 
         return ResponseEntity.ok("Deleted successfully");
+
+    } catch(Exception e){
+        e.printStackTrace(); // 🔥 VERY IMPORTANT
+        return ResponseEntity.status(500).body("Delete failed: " + e.getMessage());
     }
+}
     // 🔥 ADD THIS HERE (UPDATE)
     @PutMapping("/{id}")
     public Student updateStudent(@PathVariable String id, @RequestBody Student student) {
