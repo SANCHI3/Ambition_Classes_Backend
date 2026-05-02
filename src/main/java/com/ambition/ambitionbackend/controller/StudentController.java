@@ -50,7 +50,7 @@ public ResponseEntity<?> deleteStudent(@PathVariable String mobile) {
             return ResponseEntity.status(404).body("Student not found");
         }
 
-        studentRepository.delete(student);
+        studentRepository.deleteById(student.getId());
 
         return ResponseEntity.ok("Deleted OK");
 
