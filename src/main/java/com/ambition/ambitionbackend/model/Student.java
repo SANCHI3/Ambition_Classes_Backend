@@ -13,10 +13,11 @@ public class Student {
     private String parentMobile;
     private String name;
     private String className;
-    private String feesStatus;
+
     private double totalFees;
     private double paidAmount;
 
+    // 🔥 CALCULATED FIELD (NO STORAGE)
     public String getFeesStatus() {
         if (paidAmount >= totalFees) return "Paid";
         else if (paidAmount == 0) return "Pending";
@@ -29,6 +30,8 @@ public class Student {
     public String getParentMobile() { return parentMobile; }
     public String getName() { return name; }
     public String getClassName() { return className; }
+    public double getTotalFees() { return totalFees; }
+    public double getPaidAmount() { return paidAmount; }
 
     // SETTERS
     public void setId(String id) { this.id = id; }
@@ -36,29 +39,6 @@ public class Student {
     public void setParentMobile(String parentMobile) { this.parentMobile = parentMobile; }
     public void setName(String name) { this.name = name; }
     public void setClassName(String className) { this.className = className; }
-
-    public double getTotalFees() {
-        return totalFees;
-    }
-
-    public void setTotalFees(double totalFees) {
-        this.totalFees = totalFees;
-    }
-
-    public double getPaidAmount() {
-        return paidAmount;
-    }
-
-    public void setPaidAmount(double paidAmount) {
-        this.paidAmount = paidAmount;
-    }
-
-    public String getFeesStatus() {
-    return feesStatus;
-}
-
-public void setFeesStatus(String feesStatus) {
-    this.feesStatus = feesStatus;
-}
-
+    public void setTotalFees(double totalFees) { this.totalFees = totalFees; }
+    public void setPaidAmount(double paidAmount) { this.paidAmount = paidAmount; }
 }
