@@ -94,6 +94,25 @@ public Student updateFees(@PathVariable String id,
 
     return studentRepository.save(existing);
 }
+    @PutMapping("/{id}")
+public Student updateStudent(@PathVariable String id,
+                             @RequestBody Student student) {
+
+    Student existing = studentRepository.findById(id).orElse(null);
+
+    if (existing == null) {
+        throw new RuntimeException("Student not found");
+    }
+
+    existing.setName(student.getName());
+    existing.setStudentMobile(student.getStudentMobile());
+    existing.setParentMobile(student.getParentMobile());
+    existing.setClassName(student.getClassName());
+    existing.setTotalFees(student.getTotalFees());
+    existing.setPaidAmount(student.getPaidAmount());
+
+    return studentRepository.save(existing);
+}
    
     @GetMapping("/{id}")
     public Student getById(@PathVariable String id){
