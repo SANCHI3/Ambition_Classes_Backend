@@ -94,7 +94,7 @@ public Student updateFees(@PathVariable String id,
 
     return studentRepository.save(existing);
 }
-    @PutMapping("/{id}")
+@PutMapping("/{id}")
 public Student updateStudent(@PathVariable String id,
                              @RequestBody Student student) {
 
