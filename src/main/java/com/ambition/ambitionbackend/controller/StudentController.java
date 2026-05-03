@@ -77,7 +77,7 @@ public ResponseEntity<?> deleteStudent(@PathVariable String mobile) {
     }
 }
     // 🔥 ADD THIS HERE (UPDATE)
-    @PutMapping("/fees/{id}")
+@PutMapping("/fees/{id}")
 public Student updateFees(@PathVariable String id,
                           @RequestBody StudentRequest request) {
 
@@ -90,13 +90,7 @@ public Student updateFees(@PathVariable String id,
     existing.setTotalFees(request.getTotalFees());
     existing.setPaidAmount(request.getPaidAmount());
 
-    if(request.getPaidAmount() >= request.getTotalFees()){
-        existing.setFeesStatus("Paid");
-    } else if(request.getPaidAmount() > 0){
-        existing.setFeesStatus("Partial");
-    } else {
-        existing.setFeesStatus("Pending");
-    }
+    // ❌ REMOVE feesStatus logic completely
 
     return studentRepository.save(existing);
 }
