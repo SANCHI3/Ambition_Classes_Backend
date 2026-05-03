@@ -100,32 +100,7 @@ public Student updateFees(@PathVariable String id,
 
     return studentRepository.save(existing);
 }
-    @PutMapping("/fees/{mobile}")
-public Student updateFees(@PathVariable String mobile,
-                          @RequestBody StudentRequest request) {
-
-    System.out.println("Incoming → " + request.getTotalFees() + " / " + request.getPaidAmount());
-
-    Student existing = studentRepository.findByStudentMobile(mobile);
-
-    if (existing == null) {
-        throw new RuntimeException("Student not found");
-    }
-
-    existing.setTotalFees(request.getTotalFees());
-    existing.setPaidAmount(request.getPaidAmount());
-
-    // 🔥 IMPORTANT FIX
-    if(request.getPaidAmount() >= request.getTotalFees()){
-        existing.setFeesStatus("Paid");
-    } else if(request.getPaidAmount() > 0){
-        existing.setFeesStatus("Partial");
-    } else {
-        existing.setFeesStatus("Pending");
-    }
-
-    return studentRepository.save(existing);
-}
+   
     @GetMapping("/{id}")
     public Student getById(@PathVariable String id){
         return studentRepository.findById(id).orElse(null);
