@@ -29,9 +29,21 @@ public class StudentController {
 
     // ✅ ADD
     @PostMapping
-    public Student addStudent(@RequestBody Student student) {
-        return studentRepository.save(student);
+public ResponseEntity<?> addStudent(@RequestBody Student student) {
+
+    // 🔥 CHECK IF ALREADY EXISTS
+    Student existing = studentRepository.findByStudentMobile(student.getStudentMobile());
+
+    if(existing != null){
+        return ResponseEntity
+                .status(400)
+                .body("Student already exists with this mobile number");
     }
+
+    Student saved = studentRepository.save(student);
+
+    return ResponseEntity.ok(saved);
+}
 
     // ✅ GET
     @GetMapping("/all")
