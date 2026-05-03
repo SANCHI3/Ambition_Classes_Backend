@@ -53,4 +53,12 @@ public class Student {
         this.paidAmount = paidAmount;
     }
 
+    public String getFeesStatus() {
+    return feesStatus;
+}
+
+public void setFeesStatus(String feesStatus) {
+    this.feesStatus = feesStatus;
+}
+
 }
