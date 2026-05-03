@@ -77,27 +77,29 @@ public ResponseEntity<?> deleteStudent(@PathVariable String mobile) {
     }
 }
     // 🔥 ADD THIS HERE (UPDATE)
-    @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable String id, @RequestBody Student student) {
+    @PutMapping("/fees/{id}")
+public Student updateFees(@PathVariable String id,
+                          @RequestBody StudentRequest request) {
 
-        Student existing = studentRepository.findById(id).orElse(null);
+    Student existing = studentRepository.findById(id).orElse(null);
 
-        if (existing == null) return null;
-
-        existing.setName(student.getName());
-        existing.setStudentMobile(student.getStudentMobile());
-        existing.setParentMobile(student.getParentMobile());
-        existing.setClassName(student.getClassName());
-
-        // 🔥 FEES LOGIC
-        existing.setTotalFees(student.getTotalFees());
-        existing.setPaidAmount(student.getPaidAmount());
-
-        existing.setTotalFees(student.getTotalFees());
-        existing.setPaidAmount(student.getPaidAmount());
-
-        return studentRepository.save(existing);
+    if (existing == null) {
+        throw new RuntimeException("Student not found");
     }
+
+    existing.setTotalFees(request.getTotalFees());
+    existing.setPaidAmount(request.getPaidAmount());
+
+    if(request.getPaidAmount() >= request.getTotalFees()){
+        existing.setFeesStatus("Paid");
+    } else if(request.getPaidAmount() > 0){
+        existing.setFeesStatus("Partial");
+    } else {
+        existing.setFeesStatus("Pending");
+    }
+
+    return studentRepository.save(existing);
+}
     @PutMapping("/fees/{mobile}")
 public Student updateFees(@PathVariable String mobile,
                           @RequestBody StudentRequest request) {
